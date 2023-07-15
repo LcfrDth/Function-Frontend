@@ -48,7 +48,7 @@ contract Assessment {
     // Function to force 100 into the contract balance
     function force100() public {
         require(msg.sender == owner, "Only the owner can force 100 into the account");
-        balance = 100;
+        balance == 100;
     }
 
     // Function to revert the transaction and return the previous balance
