@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import atm_abi from '../artifacts/contracts/Assessment.sol/Assessment.json';
 
-export default function HomePage() {
+const HomePage = () => {
   const [ethWallet, setEthWallet] = useState(undefined);
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
   const [amount, setAmount] = useState(0);
+  const [recipientAddress, setRecipientAddress] = useState('');
+  const [transferAmount, setTransferAmount] = useState(0);
 
   const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
   const atmABI = atm_abi.abi;
@@ -41,7 +43,6 @@ export default function HomePage() {
     const accounts = await ethWallet.request({ method: 'eth_requestAccounts' });
     handleAccount(accounts);
 
-    // Once wallet is set, we can get a reference to our deployed contract
     getATMContract();
   };
 
@@ -76,13 +77,46 @@ export default function HomePage() {
     }
   };
 
+  const handleForce100 = async () => {
+    if (!atm) return;
+
+    try {
+      const tx = await atm.deposit(100);
+      await tx.wait();
+      getBalance();
+    } catch (error) {
+      console.error('Force 100 Error:', error);
+    }
+  };
+
+  const handleRevertBalance = async () => {
+    if (!atm) return;
+
+    try {
+      const tx = await atm.withdraw(balance-amount);
+      await tx.wait();
+      getBalance();
+    } catch (error) {
+      console.error('Revert Balance Error:', error);
+    }
+  };
+
+  const getRecipientBalance = async (recipient) => {
+    if (!atm) return;
+
+    try {
+      const recipientBalance = await atm.userBalances(recipient);
+      console.log('Recipient Balance:', recipientBalance.toNumber());
+    } catch (error) {
+      console.error('Error fetching recipient balance:', error);
+    }
+  };
+
   const initUser = () => {
-    // Check if user has Metamask installed
     if (!ethWallet) {
       return <p>Please install Metamask in order to use this ATM.</p>;
     }
 
-    // Check if user is connected. If not, connect to their account
     if (!account) {
       return (
         <button onClick={connectAccount}>Please connect your Metamask wallet</button>
@@ -94,7 +128,7 @@ export default function HomePage() {
     }
 
     return (
-      <div className="user-container">
+      <><div className="user-container">
         <p className="account-info">Your Account: {account}</p>
         <p className="account-info">Your Balance: {balance}</p>
         <input
@@ -103,7 +137,7 @@ export default function HomePage() {
           onChange={(e) => setAmount(parseInt(e.target.value))}
           className="amount-input"
         />
-        <br></br>
+        <br />
         <button onClick={handleDeposit} className="action-button1">
           Deposit
         </button>
@@ -111,6 +145,16 @@ export default function HomePage() {
           Withdraw
         </button>
       </div>
+      <br />
+        <div>
+        <button onClick={handleRevertBalance} className="action-button3">
+          Revert Balance
+        </button>
+        <br />
+          <button onClick={handleForce100} className="action-button4">
+            Force 100
+          </button>
+        </div></>
     );
   };
 
@@ -126,4 +170,6 @@ export default function HomePage() {
       {initUser()}
     </main>
   );
-}
+};
+
+export default HomePage;
