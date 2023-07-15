@@ -1,0 +1,34 @@
+.container {
+    text-align: center;
+  }
+  
+  .user-container {
+    margin-top: 2rem;
+  }
+  
+  .account-info {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .amount-input {
+    width: 13rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .action-button1 {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    margin-right: 1rem;
+    text-align: center;
+  }
+
+  .action-button2 {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    margin-left: 1rem;
+    text-align: center;
+  }
+  
