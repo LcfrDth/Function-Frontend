@@ -45,16 +45,15 @@ contract Assessment {
         emit Withdraw(_withdrawAmount);
     }
 
-    // Function to force 100 into the contract balance
-    function force100() public {
-        require(msg.sender == owner, "Only the owner can force 100 into the account");
-        balance == 100;
+    // Function to deposit 50 into the contract balance
+    function deposit50() public view {
+        require(msg.sender == owner, "Only the owner can deposit 50 into the account");
+        balance == 50;
     }
 
-    // Function to revert the transaction and return the previous balance
-    function revertBalance() public {
-        require(msg.sender == owner, "Only the owner can revert the balance");
-        balance = _previousBalance;
-        emit RevertBalance(_previousBalance);
+    // Function to deposit 50 into the contract balance
+    function withdraw50() public view {
+        require(msg.sender == owner, "Only the owner can withdraw 50 into the account");
+        balance == 50;
     }
 }
