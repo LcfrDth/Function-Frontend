@@ -62,44 +62,36 @@ const HomePage = () => {
   };
 
   const handleDeposit = async () => {
-    if (atm && amount > 0) {
-      const tx = await atm.deposit(amount);
-      await tx.wait();
+    if (atm) {
+      let tx = await atm.deposit(1);
+      await tx.wait()
       getBalance();
     }
   };
 
   const handleWithdraw = async () => {
-    if (atm && amount > 0) {
-      const tx = await atm.withdraw(amount);
-      await tx.wait();
+      if (atm) {
+        let tx = await atm.withdraw(1);
+        await tx.wait()
+        getBalance();
+      }
+    };  
+  
+  const handleDeposit50 = async () => {
+    if (atm) {
+      let tx = await atm.deposit(50);
+      await tx.wait()
       getBalance();
     }
   };
 
-  const handleForce100 = async () => {
-    if (!atm) return;
-
-    try {
-      const tx = await atm.deposit(100);
-      await tx.wait();
+  const handleWithdraw50 = async () => {
+    if (atm) {
+      let tx = await atm.withdraw(50);
+      await tx.wait()
       getBalance();
-    } catch (error) {
-      console.error('Force 100 Error:', error);
     }
-  };
-
-  const handleRevertBalance = async () => {
-    if (!atm) return;
-
-    try {
-      const tx = await atm.withdraw(balance-amount);
-      await tx.wait();
-      getBalance();
-    } catch (error) {
-      console.error('Revert Balance Error:', error);
-    }
-  };
+  };  
 
   const getRecipientBalance = async (recipient) => {
     if (!atm) return;
@@ -131,28 +123,22 @@ const HomePage = () => {
       <><div className="user-container">
         <p className="account-info">Your Account: {account}</p>
         <p className="account-info">Your Balance: {balance}</p>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(parseInt(e.target.value))}
-          className="amount-input"
-        />
         <br />
         <button onClick={handleDeposit} className="action-button1">
-          Deposit
+          Deposit 1
         </button>
         <button onClick={handleWithdraw} className="action-button2">
-          Withdraw
+          Withdraw 1
         </button>
       </div>
       <br />
         <div>
-        <button onClick={handleRevertBalance} className="action-button3">
-          Revert Balance
-        </button>
-        <br />
-          <button onClick={handleForce100} className="action-button4">
-            Force 100
+          <button onClick={handleDeposit50} className="action-button1">
+            Deposit 50
+          </button>
+
+          <button onClick={handleWithdraw50} className="action-button2">
+            Withdraw 50
           </button>
         </div></>
     );
