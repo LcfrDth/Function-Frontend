@@ -19,4 +19,4 @@ If you have any problems or queries when working with Solidity, see the relevant
 
 ## Authors
 
-Eiron Maningat - Mapua University
+Mark Arceo - Mapua University
